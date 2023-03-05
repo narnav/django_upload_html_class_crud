@@ -3,10 +3,15 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import serializers
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 
-
+@api_view(['GET'])
 def index(request):
-    return HttpResponse("test")
+    return Response("test")
+
+def test(request):
+    return Response({"public":"a"})
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -51,8 +56,9 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         fields = '__all__'
 
-
+@permission_classes([IsAuthenticated])
 class student_Views(APIView):
+    
     def get(self, request, pk=-1):  # axios.get
         if pk > -1:
             my_model = Student.objects.get(id=pk)
