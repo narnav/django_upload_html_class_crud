@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body onload="displayMyCart()">
+    <h1>Super market products</h1>
+    <div id="display" style="background-color: wheat;"></div>
+
+    <h1>My Cart</h1>
+    <div id="cart" style="background-color: rgb(187, 245, 179);"></div>
+    <script>
+        const superProds=[{price:20,desc:'milk'},{price:10,desc:'XL'},{price:12,desc:'COLA'}]
+        const myCart=[]
+        display.innerHTML= superProds.map(prod => 
+            `<div>
+                price: ${prod.price}   &#x20AA;,
+                desc: ${prod.desc}
+                <button onclick="buyProduct({price:${prod.price},desc:'${prod.desc}'})">Add</button> 
+            </div>`).join("")
+        
+            const buyProduct=(prod)=>{
+                myCart.push(prod)
+                // console.table(myCart)
+                localStorage.setItem('cart', JSON.stringify( myCart))
+                displayMyCart()
+            }
+
+            const displayMyCart=()=>{
+                const myData= JSON.parse( localStorage.getItem('cart'))
+                console.log( myData)
+                cart.innerHTML= myData.map(prod => 
+            `<div>
+                price: ${prod.price}   &#x20AA;,
+                desc: ${prod.desc}
+            </div>`).join("")
+            }
+    </script>
+</body>
+</html>

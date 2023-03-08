@@ -47,11 +47,20 @@
     User<input id="user">
     Pwd<input id="pwd">
     <button onclick="login()">Login</button>
+    <button onclick="register()">Register</button>
     <button onclick="loadData()">test students</button>
 
     <script>
         let token = ""
         const MY_SERVER = "http://127.0.0.1:8000"; // had to add last slash else I receive CORS error
+        const register = async () => {
+            res = await axios.post(MY_SERVER + "/register/", {
+                "username": user.value,
+                "password": pwd.value,
+                "email":"wa@ga.com"
+            });
+            console.log(res.data)
+        }
         const login = async () => {
             res = await axios.post(MY_SERVER + "/login/", {
                 "username": user.value,

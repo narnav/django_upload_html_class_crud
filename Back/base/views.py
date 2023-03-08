@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework import serializers
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.models import User
 
 @api_view(['GET'])
 def index(request):
@@ -18,6 +19,19 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
+
+# register
+@api_view(['POST'])
+def register(request):
+    user = User.objects.create_user(
+                username=request.data['username'],
+                email=request.data['email'],
+                password=request.data['password']
+            )
+    user.is_active = True
+    user.is_staff = True
+    user.save()
+    return Response("new user born")
 
 
 class MyModelView(APIView):
