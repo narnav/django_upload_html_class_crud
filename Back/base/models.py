@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 from django.db import models
@@ -16,6 +17,7 @@ class Product(models.Model):
 
 
 class Student(models.Model):
+    user =models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
     sname = models.CharField(max_length=100)
     age = models.IntegerField()
     img = models.ImageField(upload_to='Posted_Images')

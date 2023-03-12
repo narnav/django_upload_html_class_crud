@@ -69,21 +69,27 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = '__all__'
-
+    def create(self, validated_data):
+        user = self.context['user']
+        print(user)
+        return Student.objects.create(**validated_data,user=user)
+    
 @permission_classes([IsAuthenticated])
 class student_Views(APIView):
-    
     def get(self, request, pk=-1):  # axios.get
         if pk > -1:
             my_model = Student.objects.get(id=pk)
             serializer = StudentSerializer(my_model, many=False)
         else:
-            my_model = Student.objects.all()
+            # my_model = Student.objects.all()
+            my_model = request.user.student_set.all()
             serializer = StudentSerializer(my_model, many=True)
         return Response(serializer.data)
-
+    
+    
     def post(self, request):  # axios.post
-        serializer = StudentSerializer(data=request.data)
+        print(request.user)
+        serializer = StudentSerializer(data=request.data, context={'user': request.user})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
